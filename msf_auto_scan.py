@@ -23,9 +23,9 @@ def generate_rc_file(ip, rc_template_path='metasploit/scan_template.rc', rc_out_
 
 def run_msfconsole(rc_path):
     print("Lancement de Metasploit...")
-    # On redirige stdout/stderr dans un fichier spool.txt
     spool_path = 'metasploit/results/spool.txt'
     os.makedirs('metasploit/results', exist_ok=True)
+    # Remplace ici par le chemin correct si nécessaire
     cmd = ['/usr/src/metasploit-framework/msfconsole', '-q', '-r', rc_path]
     with open(spool_path, 'w') as f:
         subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT)
@@ -38,7 +38,6 @@ def parse_spool_to_json(spool_path, json_out_path='metasploit/results/msf_report
 
     results = []
 
-    # Exemple: parser lignes avec "Host: <ip> Port: <port>/tcp State: open"
     for line in lines:
         host_match = re.search(r'Host: (\d+\.\d+\.\d+\.\d+)', line)
         port_match = re.search(r'Port: (\d+)/tcp', line)
@@ -61,6 +60,16 @@ def parse_spool_to_json(spool_path, json_out_path='metasploit/results/msf_report
     with open(json_out_path, 'w') as f:
         json.dump(results, f, indent=2)
     print(f"Rapport JSON généré dans {json_out_path}")
+    return results
+
+def test_spool_content(spool_path):
+    with open(spool_path, 'r') as f:
+        content = f.read()
+    # Test simple : chercher un mot-clé "Host" dans le fichier
+    if "Host:" in content:
+        print("Le fichier spool contient des résultats exploitables.")
+    else:
+        print("Aucun résultat de scan détecté dans le fichier spool.")
 
 def main():
     ip = get_local_ip()
@@ -71,6 +80,7 @@ def main():
 
     rc_path = generate_rc_file(ip)
     spool_path = run_msfconsole(rc_path)
+    test_spool_content(spool_path)
     parse_spool_to_json(spool_path)
 
 if __name__ == "__main__":
