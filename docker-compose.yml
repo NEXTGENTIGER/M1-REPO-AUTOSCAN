@@ -3,18 +3,18 @@ version: '3.8'
 services:
   metasploit:
     build:
-      context: ./metasploit
+      context: .
       dockerfile: Dockerfile-metas
     container_name: metasploit
     tty: true
     stdin_open: true
     volumes:
-      - ./metasploit:/app/metasploit
       - ./results:/app/results
     command: python3 /app/metasploit/msf_auto_scan.py
     networks:
       - secnet
-
+    command: python3 /app/msf_auto_scan.py
+    
   nmapscanner:
     build:
       context: .
