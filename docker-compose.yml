@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   metasploit:
-    build:
-      context: ./metasploit
-      dockerfile: Dockerfile
+    image: metasploitframework/metasploit-framework
     container_name: metasploit
     tty: true
     stdin_open: true
