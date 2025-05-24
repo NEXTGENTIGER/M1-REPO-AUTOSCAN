@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  metasploit:
+    image: metasploitframework/metasploit-framework
+    container_name: metasploit
+    tty: true
+    stdin_open: true
+    networks:
+      - secnet
+
+  nmapscanner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nmapscanner
+    volumes:
+      - ./scanner.py:/app/scanner.py
+      - ./results:/app/results
+    command: python3 /app/scanner.py 192.168.1.1
+    networks:
+      - secnet
+
+  tshark:
+    image: nicolaka/netshoot
+    container_name: tshark
+    command: tshark -i eth0
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - secnet
+
+  zap:
+    image: zaproxy/zap-stable
+    container_name: zap
+    ports:
+      - "8090:8090"
+    command: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8090"]
+    user: "zap"
+    networks:
+      - secnet
+
+networks:
+  secnet:
+    driver: bridge
