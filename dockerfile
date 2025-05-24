@@ -1,11 +1,9 @@
-FROM metasploitframework/metasploit-framework
+FROM python:3.11-slim
 
-USER root
-RUN apt-get update && apt-get install -y python3 python3-pip && apt-get clean
+RUN apt-get update && apt-get install -y nmap && pip install python-nmap
 
 WORKDIR /app
 
-COPY metasploit/msf_auto_scan.py /app/msf_auto_scan.py
-COPY metasploit /app/metasploit
+COPY scanner.py .
 
-CMD ["python3", "/app/msf_auto_scan.py"]
+CMD ["python3", "/app/scanner.py"]
