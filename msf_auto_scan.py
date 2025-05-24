@@ -2,6 +2,7 @@ import subprocess
 import os
 import re
 import json
+import sys
 
 def get_local_ip(interface='eth0'):
     try:
@@ -25,7 +26,6 @@ def run_msfconsole(rc_path):
     print("Lancement de Metasploit...")
     spool_path = 'metasploit/results/spool.txt'
     os.makedirs('metasploit/results', exist_ok=True)
-    # Modifier le chemin de msfconsole si nécessaire
     cmd = ['/usr/src/metasploit-framework/msfconsole', '-q', '-r', rc_path]
     with open(spool_path, 'w') as f:
         subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT)
@@ -48,13 +48,11 @@ def parse_spool_to_json(spool_path, json_out_path='metasploit/results/msf_report
     exploits = []
 
     for line in lines:
-        # Parsing des ports/services
         host_match = re.search(r'Host: (\d+\.\d+\.\d+\.\d+)', line)
         port_match = re.search(r'Port: (\d+)/tcp', line)
         state_match = re.search(r'State: (\w+)', line)
         service_match = re.search(r'Service: (\w+)', line)
 
-        # Parsing d'une exploitation réussie (Meterpreter session ouverte)
         exploit_match = re.search(r'\[\*\] Meterpreter session (\d+) opened.*?(\d+\.\d+\.\d+\.\d+)', line)
         user_match = re.search(r'Username\s+:\s+(\w+)', line)
         platform_match = re.search(r'Platform\s+:\s+(\w+)', line)
@@ -100,17 +98,23 @@ def parse_spool_to_json(spool_path, json_out_path='metasploit/results/msf_report
     print(json.dumps(final_output, indent=2))
     return final_output
 
-def main():
-    ip = get_local_ip()
-    if not ip:
-        print("IP locale non trouvée, arrêt.")
-        return
-    print(f"IP locale détectée: {ip}")
+def main(ip_cible=None):
+    if ip_cible is None:
+        ip_cible = get_local_ip()
+        if not ip_cible:
+            print("IP locale non trouvée, arrêt.")
+            return
+        print(f"IP locale détectée: {ip_cible}")
+    else:
+        print(f"IP cible fournie: {ip_cible}")
 
-    rc_path = generate_rc_file(ip)
+    rc_path = generate_rc_file(ip_cible)
     spool_path = run_msfconsole(rc_path)
     test_spool_content(spool_path)
     parse_spool_to_json(spool_path)
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
+    else:
+        main()
