@@ -12,7 +12,6 @@ services:
       - ./msf_auto_scan.py:/app/msf_auto_scan.py
       - ./results:/app/results
     command: python3 /app/msf_auto_scan.py
-    entrypoint: docker/entrypoint.sh
     networks:
       - secnet
     
@@ -25,7 +24,6 @@ services:
       - ./scanner.py:/app/scanner.py
       - ./results:/app/results
     command: python3 /app/scanner.py 192.168.1.1
-    entrypoint: docker/entrypoint.sh
     networks:
       - secnet
 
