@@ -10,6 +10,7 @@ services:
     stdin_open: true
     volumes:
       - ./msf_auto_scan.py:/app/msf_auto_scan.py
+      - ./metasploit/scan_template.rc:/app/metasploit/scan_template.rc
       - ./results:/app/results
     command: python3 /app/msf_auto_scan.py
     networks:
