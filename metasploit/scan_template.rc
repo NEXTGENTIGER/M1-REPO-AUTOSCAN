@@ -3,5 +3,8 @@ use auxiliary/scanner/portscan/tcp
 set RHOSTS __TARGET_IP__
 set THREADS 10
 run
+
+# Export propre
+services
 db_export -f json -o /app/metasploit/results/msf_report.json
 exit
