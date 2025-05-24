@@ -6,7 +6,7 @@ import json
 def generate_rc_file(ip, rc_template_path='metasploit/scan_template.rc', rc_out_path='metasploit/scan_auto.rc'):
     with open(rc_template_path, 'r') as f:
         content = f.read()
-    content = content.replace('__TARGET_IP__', ip)
+    content = content.replace('192.168.75.130', ip)
     with open(rc_out_path, 'w') as f:
         f.write(content)
     print(f"Fichier RC généré avec IP: {ip}")
