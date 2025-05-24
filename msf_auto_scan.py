@@ -9,7 +9,9 @@ def generate_rc_file(ip, rc_template_path='metasploit/scan_template.rc', rc_out_
     content = content.replace('__TARGET_IP__', ip)
     with open(rc_out_path, 'w') as f:
         f.write(content)
+    print(f"Fichier RC généré avec IP: {ip}")
     return rc_out_path
+
 
 def run_msfconsole(rc_path):
     print("Lancement de Metasploit...")
