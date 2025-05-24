@@ -1,23 +1,16 @@
-FROM metasploitframework/metasploit-framework
+FROM metasploitframework/metasploit-framework:latest
 
 USER root
 
-# Installer Python3 et pip via apk (car cette image est Alpine-based)
-RUN apk add --no-cache python3 py3-pip
+# Installer Python3 et pip (selon la base, ici on tente apk, sinon apt)
+RUN apk add --no-cache python3 py3-pip || \
+    (apt-get update && apt-get install -y python3 python3-pip && apt-get clean)
 
-# Créer le dossier /app
-RUN mkdir -p /app
-
-# Définir le dossier de travail
 WORKDIR /app
 
-# Copier le script Python dans l'image
 COPY msf_auto_scan.py /app/msf_auto_scan.py
 COPY metasploit/scan_template.rc /app/metasploit/scan_template.rc
 
-# Écraser l'entrypoint par défaut (très important !)
 ENTRYPOINT []
 
-# Commande par défaut
 CMD ["python3", "/app/msf_auto_scan.py"]
-
