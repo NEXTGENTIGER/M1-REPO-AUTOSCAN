@@ -2,8 +2,16 @@ FROM metasploitframework/metasploit-framework
 
 USER root
 
+# Installer Python3 et pip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    apt-get clean
+
+# Définir le dossier de travail
 WORKDIR /app
 
+# Copier ton script Python dans l'image
 COPY msf_auto_scan.py .
 
+# Définir la commande par défaut à l'exécution du conteneur
 CMD ["python3", "/app/msf_auto_scan.py"]
