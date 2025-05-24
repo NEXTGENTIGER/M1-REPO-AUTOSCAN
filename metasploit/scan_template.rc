@@ -2,7 +2,7 @@ workspace -a scan_workspace
 workspace scan_workspace
 
 use auxiliary/scanner/portscan/tcp
-set RHOSTS 192.168.75.130
+set RHOSTS __TARGET_IP__
 set THREADS 10
 run
 
