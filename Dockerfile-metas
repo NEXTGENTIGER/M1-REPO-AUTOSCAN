@@ -13,7 +13,7 @@ WORKDIR /app
 
 # Copier le script Python dans l'image
 COPY msf_auto_scan.py /app/msf_auto_scan.py
-COPY scan_template.rc /app/scan_template.rc
+COPY metasploit/scan_template.rc /app/metasploit/scan_template.rc
 
 # Écraser l'entrypoint par défaut (très important !)
 ENTRYPOINT []
