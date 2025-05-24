@@ -1,0 +1,21 @@
+# Dockerfile-metas 
+
+FROM metasploitframework/metasploit-framework
+
+# Copier ton script python dans le conteneur
+COPY msf_auto_scan.py /app/msf_auto_scan.py
+
+# Copier le dossier metasploit (avec scan_template.rc)
+COPY metasploit /app/metasploit
+
+WORKDIR /app
+
+# Installer python si besoin (par défaut l'image officielle ne l'a pas)
+USER root
+RUN apt-get update && apt-get install -y python3 python3-pip
+
+# Installer les dépendances Python (si tu en as, sinon à adapter)
+# RUN pip3 install some_package
+
+# Par défaut, lancer ton script python
+CMD ["python3", "/app/msf_auto_scan.py"]
