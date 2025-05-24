@@ -28,7 +28,7 @@ services:
       - ./msf_auto_scan.py:/app/msf_auto_scan.py
       - ./metasploit/scan_template.rc:/app/metasploit/scan_template.rc
       - ./metasploit/results:/app/metasploit/results
-    command: sh -c "msfdb start && python3 /app/msf_auto_scan.py"
+    command: python3 /app/msf_auto_scan.py
     networks:
       - secnet
 
