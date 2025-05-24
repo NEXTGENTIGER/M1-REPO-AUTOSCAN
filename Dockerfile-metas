@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -y python3 python3-pip && apt-get clean
 
 WORKDIR /app
 
-COPY msf_auto_scan.py /app/msf_auto_scan.py
-COPY /app/metasploit
+COPY msf_auto_scan.py .
 
 CMD ["python3", "/app/msf_auto_scan.py"]
