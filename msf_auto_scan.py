@@ -3,16 +3,6 @@ import os
 import re
 import json
 
-def get_local_ip(interface='eth0'):
-    try:
-        result = subprocess.run(['ip', 'addr', 'show', interface], capture_output=True, text=True)
-        ip_line = next(line for line in result.stdout.split('\n') if 'inet ' in line)
-        ip = ip_line.strip().split(' ')[1].split('/')[0]
-        return ip
-    except Exception as e:
-        print(f"Erreur pour récupérer IP: {e}")
-        return None
-
 def generate_rc_file(ip, rc_template_path='metasploit/scan_template.rc', rc_out_path='metasploit/scan_auto.rc'):
     with open(rc_template_path, 'r') as f:
         content = f.read()
@@ -25,6 +15,7 @@ def run_msfconsole(rc_path):
     print("Lancement de Metasploit...")
     spool_path = 'metasploit/results/spool.txt'
     os.makedirs('metasploit/results', exist_ok=True)
+    # Modifier le chemin de msfconsole si nécessaire
     cmd = ['/usr/src/metasploit-framework/msfconsole', '-q', '-r', rc_path]
     with open(spool_path, 'w') as f:
         subprocess.run(cmd, stdout=f, stderr=subprocess.STDOUT)
@@ -47,11 +38,13 @@ def parse_spool_to_json(spool_path, json_out_path='metasploit/results/msf_report
     exploits = []
 
     for line in lines:
+        # Parsing des ports/services
         host_match = re.search(r'Host: (\d+\.\d+\.\d+\.\d+)', line)
         port_match = re.search(r'Port: (\d+)/tcp', line)
         state_match = re.search(r'State: (\w+)', line)
         service_match = re.search(r'Service: (\w+)', line)
 
+        # Parsing d'une exploitation réussie (Meterpreter session ouverte)
         exploit_match = re.search(r'\[\*\] Meterpreter session (\d+) opened.*?(\d+\.\d+\.\d+\.\d+)', line)
         user_match = re.search(r'Username\s+:\s+(\w+)', line)
         platform_match = re.search(r'Platform\s+:\s+(\w+)', line)
@@ -98,12 +91,11 @@ def parse_spool_to_json(spool_path, json_out_path='metasploit/results/msf_report
     return final_output
 
 def main():
-    ip = input("Veuillez saisir l'adresse IP cible : ").strip()
+    ip = input("Merci de saisir l'adresse IP cible pour le scan : ").strip()
     if not ip:
-        print("Aucune IP saisie, arrêt.")
+        print("Adresse IP non saisie, arrêt.")
         return
-
-    print(f"IP cible saisie : {ip}")
+    print(f"IP cible détectée : {ip}")
 
     rc_path = generate_rc_file(ip)
     spool_path = run_msfconsole(rc_path)
