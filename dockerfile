@@ -1,9 +1,15 @@
 FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y nmap && pip install python-nmap
+# Installer nmap
+RUN apt-get update && apt-get install -y nmap
+
+# Installer python-nmap
+RUN pip install python-nmap
 
 WORKDIR /app
 
-COPY scanner.py .
+# Copier ton script python
+COPY nmap.py .
 
-CMD ["python3", "/app/scanner.py"]
+# Commande pour lancer le script python
+CMD ["python3", "nmap.py"]
