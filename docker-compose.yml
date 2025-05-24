@@ -2,10 +2,16 @@ version: '3.8'
 
 services:
   metasploit:
-    image: metasploitframework/metasploit-framework
+    build:
+      context: ./metasploit
+      dockerfile: Dockerfile
     container_name: metasploit
     tty: true
     stdin_open: true
+    volumes:
+      - ./metasploit:/app/metasploit
+      - ./results:/app/results   # partage dossier résultats
+    command: python3 /app/metasploit/msf_auto_scan.py
     networks:
       - secnet
 
