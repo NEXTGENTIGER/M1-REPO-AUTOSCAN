@@ -1,10 +1,13 @@
 workspace -a scan_workspace
+workspace scan_workspace
+
 use auxiliary/scanner/portscan/tcp
 set RHOSTS __TARGET_IP__
 set THREADS 10
 run
 
-# Export propre
 services
-db_export -f xml -o /app/metasploit/results/msf_report.xml
+
+db_export -f xml -o metasploit/results/msf_report.xml
+
 exit
