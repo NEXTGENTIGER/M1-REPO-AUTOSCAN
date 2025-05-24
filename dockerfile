@@ -12,4 +12,4 @@ WORKDIR /app
 COPY nmap.py .
 
 # Commande pour lancer le script python
-CMD ["python3", "nmap.py"]
+CMD ["python3", "scanner.py"]
