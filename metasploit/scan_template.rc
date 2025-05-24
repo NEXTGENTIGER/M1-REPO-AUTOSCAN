@@ -6,5 +6,5 @@ run
 
 # Export propre
 services
-db_export -f json -o /app/metasploit/results/msf_report.json
+db_export -f xml -o /app/metasploit/results/msf_report.xml
 exit
