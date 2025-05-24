@@ -14,4 +14,26 @@ Si tu préfères supprimer tous les conteneurs arrêtés en une seule commande (
 
 docker container prune
 
+----------------------------------------------LOG MAPS------------------------------------------------------------------
+Directement sur ta machine (dans le dossier monté)
+
+Si tu as bien créé le dossier results localement et que ton volume Docker est configuré correctement, tu peux juste faire :
+
+cat /home/user/M1-REPO-AUTOSCAN/results/result.json
+
+ou pour un affichage plus lisible :
+
+jq . /home/user/M1-REPO-AUTOSCAN/results/result.json
+
+(jq est un utilitaire JSON pratique, sinon tu peux juste utiliser cat)
+2. Depuis le conteneur Docker
+
+Si tu veux lire le fichier directement à l’intérieur du conteneur nmapscanner :
+
+docker exec -it nmapscanner cat /app/results/result.json
+
+Ou pour une lecture paginée :
+
+docker exec -it nmapscanner less /app/results/result.json
+
 ----------------------------------------------------------------------------------------------------------------
