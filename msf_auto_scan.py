@@ -2,7 +2,6 @@ import subprocess
 import os
 import re
 import json
-import sys
 
 def get_local_ip(interface='eth0'):
     try:
@@ -98,23 +97,18 @@ def parse_spool_to_json(spool_path, json_out_path='metasploit/results/msf_report
     print(json.dumps(final_output, indent=2))
     return final_output
 
-def main(ip_cible=None):
-    if ip_cible is None:
-        ip_cible = get_local_ip()
-        if not ip_cible:
-            print("IP locale non trouvée, arrêt.")
-            return
-        print(f"IP locale détectée: {ip_cible}")
-    else:
-        print(f"IP cible fournie: {ip_cible}")
+def main():
+    ip = input("Veuillez saisir l'adresse IP cible : ").strip()
+    if not ip:
+        print("Aucune IP saisie, arrêt.")
+        return
 
-    rc_path = generate_rc_file(ip_cible)
+    print(f"IP cible saisie : {ip}")
+
+    rc_path = generate_rc_file(ip)
     spool_path = run_msfconsole(rc_path)
     test_spool_content(spool_path)
     parse_spool_to_json(spool_path)
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        main(sys.argv[1])
-    else:
-        main()
+    main()
