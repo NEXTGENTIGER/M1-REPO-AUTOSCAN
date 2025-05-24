@@ -2,8 +2,21 @@ FROM metasploitframework/metasploit-framework
 
 USER root
 
-# Copier ton script Python dans l'image
-COPY msf_auto_scan.py .
+# Installer Python3 et pip via apk (car cette image est Alpine-based)
+RUN apk add --no-cache python3 py3-pip
 
-# Définir la commande par défaut à l'exécution du conteneur
+# Créer le dossier /app
+RUN mkdir -p /app
+
+# Définir le dossier de travail
+WORKDIR /app
+
+# Copier le script Python dans l'image
+COPY msf_auto_scan.py /app/msf_auto_scan.py
+
+# Écraser l'entrypoint par défaut (très important !)
+ENTRYPOINT []
+
+# Commande par défaut
 CMD ["python3", "/app/msf_auto_scan.py"]
+
