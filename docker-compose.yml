@@ -10,7 +10,7 @@ services:
     stdin_open: true
     volumes:
       - ./results:/app/results
-    command: python3 /app/metasploit/msf_auto_scan.py
+    command: python3 /app/msf_auto_scan.py
     networks:
       - secnet
     
