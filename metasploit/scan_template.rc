@@ -3,7 +3,5 @@ use auxiliary/scanner/portscan/tcp
 set RHOSTS __TARGET_IP__
 set THREADS 10
 run
-
-# Exporter le rapport au format JSON
-spool /app/metasploit/results/msf_report.json
+db_export -f json -o /app/metasploit/results/msf_report.json
 exit
