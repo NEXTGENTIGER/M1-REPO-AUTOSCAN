@@ -2,8 +2,9 @@ FROM metasploitframework/metasploit-framework:latest
 
 USER root
 
-# Installer python, pip et postgresql client
-RUN apk update && apk add --no-cache \
+# Remplacer le miroir APK par un miroir plus stable, puis installer python, pip, postgresql client, bash
+RUN sed -i 's|dl-cdn.alpinelinux.org|mirror.sfo12.us.leaseweb.net/alpine|g' /etc/apk/repositories && \
+    apk update && apk add --no-cache \
     python3 \
     py3-pip \
     postgresql-client \
