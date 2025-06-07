@@ -29,6 +29,7 @@ services:
       - ./metasploit/scan_template.rc:/app/metasploit/scan_template.rc
       - ./metasploit/results:/app/metasploit/results
       - ./metasploit/database.yml:/root/.msf4/database.yml
+    entrypoint: []
     command: python3 /app/msf_auto_scan.py
     networks:
       - secnet
