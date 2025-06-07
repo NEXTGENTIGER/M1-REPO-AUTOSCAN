@@ -2,22 +2,22 @@ FROM metasploitframework/metasploit-framework:latest
 
 USER root
 
-# Installer Python3, pip, postgresql client
+# Installer python, pip et postgresql client
 RUN apk update && apk add --no-cache \
     python3 \
     py3-pip \
-    postgresql-client
+    postgresql-client \
+    bash
 
-# Installer xmltodict avec pip
+# Installer la dépendance Python
 RUN pip install xmltodict
 
-# Définir le répertoire de travail
+# Définir le dossier de travail
 WORKDIR /app
 
-# Copier les fichiers nécessaires dans l’image
+# Copier les fichiers
 COPY msf_auto_scan.py /app/msf_auto_scan.py
 COPY metasploit/scan_template.rc /app/metasploit/scan_template.rc
 
-# Démarrer msfconsole avec le script Python en CMD
-ENTRYPOINT ["msfconsole"]
-CMD ["-r", "/app/metasploit/scan_template.rc"]
+# Utiliser bash comme shell et lancer msfconsole avec le fichier RC
+CMD ["/bin/bash", "-c", "msfconsole -r /app/metasploit/scan_template.rc"]
