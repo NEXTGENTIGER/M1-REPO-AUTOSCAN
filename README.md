@@ -37,3 +37,30 @@ Ou pour une lecture paginée :
 docker exec -it nmapscanner less /app/results/result.json
 
 ----------------------------------------------------------------------------------------------------------------
+🔥 1. Supprimer les répertoires
+
+Lance cette commande :
+
+rm -rf /home/user/M1-REPO /home/user/M1-REPO-AUTOSCAN
+
+⚠️ Cette commande supprime définitivement les dossiers sans confirmation, donc sois sûr de ton coup.
+🐳 2. Lister les conteneurs Docker qui tournent
+
+Pour voir les conteneurs en cours d’exécution :
+
+docker ps
+
+🔻 3. Arrêter et supprimer les conteneurs
+
+Tu peux tout arrêter et supprimer avec :
+
+docker stop $(docker ps -q)
+docker rm $(docker ps -aq)
+
+🔥 (Optionnel) Supprimer toutes les images Docker
+
+Si tu veux aussi te débarrasser des images Docker :
+
+docker rmi $(docker images -q)
+
+Souhaites-tu aussi supprimer les volumes Docker ou les réseaux ? Je peux t’ajouter les commandes si besoin.
